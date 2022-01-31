@@ -41,7 +41,8 @@ public class RentService {
         if (!actualRenting.containsKey(rentable)) {
             throw new IllegalStateException("Vehicle is not in the system.");
         }
-        actualRenting.get(rentable).minusBalance(minutes);
+        int cost = rentable.calculateSumPrice(minutes);
+        actualRenting.get(rentable).minusBalance(cost);
         actualRenting.remove(rentable);
         rentable.closeRent();
     }
