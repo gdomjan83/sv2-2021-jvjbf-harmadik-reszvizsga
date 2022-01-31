@@ -65,8 +65,4 @@ class SongServiceTest {
         assertEquals(List.of("Yellow Submarine","Start me up"),songService.titlesBeforeDate(LocalDate.of(1984,7,26)));
         assertEquals(List.of("Ride the Lightning","Yellow Submarine","Start me up"),songService.titlesBeforeDate(LocalDate.of(1984,7,28)));
     }
-
-
-
-
 }
