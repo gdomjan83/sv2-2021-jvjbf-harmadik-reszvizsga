@@ -32,6 +32,31 @@ public class RentService {
     }
 
     public void rent(User user, Rentable rentable, LocalTime time) {
+        validateRentingParameters(user, rentable, time);
+        rentable.rent(time);
+        actualRenting.put(rentable, user);
+    }
 
+    public void closeRent(Rentable rentable, int minutes) {
+        if (!actualRenting.containsKey(rentable)) {
+            throw new IllegalStateException("Vehicle is not in the system.");
+        }
+        actualRenting.get(rentable).minusBalance(minutes);
+        actualRenting.remove(rentable);
+        rentable.closeRent();
+    }
+
+    private void validateRentingParameters(User user, Rentable rentable, LocalTime time) {
+        if (rentable.getRentingTime() != null) {
+            throw new IllegalStateException("Vehicle is already being rent.");
+        }
+
+        if (time.isBefore(LocalTime.now())) {
+            throw new IllegalStateException("You can not start renting in the past.");
+        }
+
+        if (user.getBalance() < rentable.calculateSumPrice(180)) {
+            throw new IllegalStateException("User doesn't have enough money.");
+        }
     }
 }
