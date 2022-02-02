@@ -52,10 +52,6 @@ public class RentService {
             throw new IllegalStateException("Vehicle is already being rent.");
         }
 
-        if (time.isBefore(LocalTime.now())) {
-            throw new IllegalStateException("You can not start renting in the past.");
-        }
-
         if (user.getBalance() < rentable.calculateSumPrice(180)) {
             throw new IllegalStateException("User doesn't have enough money.");
         }

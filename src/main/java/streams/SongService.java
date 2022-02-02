@@ -25,7 +25,6 @@ public class SongService {
                 .toList();
     }
 
-
     public boolean isPerformerInSong(Song song, String performer) {
         return songs.stream()
                 .filter(s -> s.equals(song))

@@ -27,7 +27,7 @@ public class MovieTheatreService {
     }
 
     public List<String> findMovie(String title) {
-        Set<String> result = new HashSet<>();
+        Set<String> result = new LinkedHashSet<>();
         for (Map.Entry<String, List<Movie>> actual : shows.entrySet()) {
             for (Movie movie : actual.getValue()) {
                 if (title.equals(movie.getTitle())) {
@@ -58,7 +58,18 @@ public class MovieTheatreService {
     }
 
     public LocalTime findLatestShow(String title) {
-        return LocalTime.now(); //nem tudtam befejzeni
+        List<Movie> movies = new ArrayList<>();
+        for (List<Movie> films : shows.values()) {
+            for (Movie actual : films) {
+                movies.add(actual);
+            }
+        }
+        return movies.stream()
+                .filter(m -> title.equals(m.getTitle()))
+                .sorted(new ScreeningTimeComparing().reversed())
+                .map(m -> m.getStartTime())
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No screening available."));
     }
 
     private String createTheatre(String line) {
